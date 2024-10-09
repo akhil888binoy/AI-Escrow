@@ -15,6 +15,10 @@ const Navbar = () => {
     <NavLink to={"/escrow"} className="hover:text-yellow-400">
       Escrow
     </NavLink>
+    <NavLink to={"/court"} className="hover:text-yellow-400">
+      AI Court
+    </NavLink>
+
     <a href="https://github.com/akhil888binoy" target="_blank" rel="noopener noreferrer" className="text-white font-cinzel hover:text-yellow-400">
       Github link
     </a>

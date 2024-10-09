@@ -17,7 +17,11 @@ const EscrowPage = () => {
   const [payeeAddress, setPayeeAddress] = useState("");
   const [arbiterAddress, setArbiterAddress] = useState("");
   const [loading, setLoading] = useState(false);
+  const [disputeSender, setDisputeSender] = useState(false);
+  const [disputeReceiver, setDisputeReceiver] = useState(false);
+
   const { data: hash, writeContract } = useWriteContract();
+
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
@@ -124,11 +128,48 @@ const EscrowPage = () => {
     setLoading(false);
   }
 
+  const toggleDisputeSender = () => {
+    if(address == payer){
+     setDisputeSender((prev) => !prev);
+    }else{
+      console.error("sender is not calling the dispute")
+    }
+  };
+
+  const toggleDisputeReceiver = () => {
+    if(address == payee){
+     setDisputeReceiver((prev) => !prev);
+    }else{
+      console.error("Receiver is not calling the dispute")
+    }
+  };
   if (!isConnected) {
     return (
-      <>
-        <ConnectButton />
-      </>
+      <div className="min-h-screen bg-black flex flex-col items-center justify-start text-center pt-16">
+      {/* Hero Section */}
+      <div className="w-full max-w-4xl p-10 bg-black text-gold-500 rounded-lg shadow-lg">
+        <h1 className="text-5xl font-cinzel text-yellow-500 mb-4">
+          Welcome to Escrow Project
+        </h1>
+        
+        {/* Escrow Project Description */}
+        <p className="text-xl font-cinzel text-yellow-500 mb-6">
+          A decentralized escrow system that ensures secure and transparent transactions. Our platform allows for easy resolution of disputes between senders and receivers with the help of a neutral arbiter.
+        </p>
+    
+        {/* Features Description */}
+        <p className="text-lg font-cinzel text-yellow-400 mb-8">
+  Whether you're sending or receiving funds for services, our system protects both parties by holding funds securely until both are satisfied. In case of a dispute, our integrated AI court steps in to provide unbiased resolutions, ensuring a fair outcome based on the evidence presented. Experience transparency, security, and fairness with our smart contract-powered escrow solution, enhanced by the intelligence of our AI court.
+</p>
+
+    
+        {/* Connect Button */}
+        <div className="mt-10">
+          <ConnectButton />
+        </div>
+      </div>
+    </div>
+    
     );
   }
 
@@ -206,13 +247,36 @@ const EscrowPage = () => {
       <p className="font-medium">Is Released: {isReleased ? "Yes" : "No"}</p>
       <p className="font-medium">Is Cancelled: {isCancelled ? "Yes" : "No"}</p>
     </div>
-    <button
-          onClick={freeContract}
-          className="bg-red-500 text-white font-cinzel rounded-md font-bold px-4 py-2"
-          disabled={loading}
-        >
-          {loading ? "Freeing..." : "Free Contract"}
-        </button>
+
+    <div className="flex flex-col sm:flex-row sm:justify-center gap-5">
+      
+  <button
+    onClick={freeContract}
+    className="bg-red-500 text-white font-cinzel rounded-md font-bold px-4 py-2"
+    disabled={loading}
+  >
+    {loading ? "Freeing..." : "Free Contract"}
+  </button>
+
+  <button
+    onClick={toggleDisputeSender}
+    className={`font-cinzel rounded-md font-bold px-4 py-2 ${
+      disputeSender ? "bg-red-500" : "bg-green-500"
+    } text-white`}
+  >
+    {disputeSender ? "Sender Has Dispute" : "No Dispute"}
+  </button>
+
+  <button
+    onClick={toggleDisputeReceiver}
+    className={`font-cinzel rounded-md font-bold px-4 py-2 ${
+      disputeReceiver ? "bg-red-500" : "bg-green-500"
+    } text-white`}
+  >
+    {disputeReceiver ? "Receiver Has Dispute" : "No Dispute"}
+  </button>
+</div>
+
   </div>
 </div>
 
