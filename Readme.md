@@ -47,7 +47,7 @@ A decentralized escrow system built on the Polygon blockchain, allowing secure t
 ## Live Demo
 
 Check out the live demo of the decentralized escrow system:  
-[Deployed Application](https://aiescrow-fw0cdv0yy-akhil888binoys-projects.vercel.app/)
+[Deployed Application](https://aiescrow.vercel.app/)
 
 ## Video Overview
 

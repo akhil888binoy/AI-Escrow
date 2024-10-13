@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Loader from '../components/Loader';
 import Skull from '../models/Skull';
 
 const SkullLanding = () => {
+
+  const [scale, setScale] = useState([6.5, 5, 5]); // default scale
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width > 1200) {
+        setScale([6.5, 5, 5]); // for large screens
+      } else if (width > 768) {
+        setScale([5.5, 4.5, 4.5]); // for tablets and medium screens
+      } else {
+        setScale([4.5, 3.5, 3.5]); // for mobile screens
+      }
+    };
+
+    // Initial call to set the scale based on current window size
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
 
     <div className="relative bg-black">
@@ -49,7 +74,7 @@ const SkullLanding = () => {
     intensity={8}
     color={"#ffcc00"}
   /> 
-        <Skull scale={[6.5, 5, 5]} position={[0, 0.5, -3]} rotation={[0, 0, 0]} />
+        <Skull scale={scale} position={[0, 0.5, -3]} rotation={[0, 0, 0]} />
       </Suspense>
     </Canvas>
   </section>
